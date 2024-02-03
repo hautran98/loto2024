@@ -24,7 +24,30 @@ const save = new Save();
 
 const resultContainer = document.getElementById("result");
 const singLotoElement = document.getElementById("loto-mp3");
-const renderInit = () => {};
+const songElement = document.getElementById("song");
+
+{
+  /* <audio controls id="loto-mp3" src="assets/audio/raoloto1.webm">
+        <source type="audio/mpeg" />
+      </audio> */
+}
+const templateChild = (number) => {
+  const audio = document.createElement("audio");
+  const source = document.createElement("source");
+  source.setAttribute("type", "audio/mpeg");
+  audio.setAttribute("id", `loto-${number}`);
+  audio.setAttribute("controls", true);
+  audio.setAttribute("src", `assets/audio/raoloto${number}.webm`);
+  audio.setAttribute("class", "d-none");
+  source.setAttribute("class", "d-none");
+  audio.appendChild(source);
+  return audio;
+};
+const renderInit = () => {
+  for (let i = 1; i <= 90; i++) {
+    songElement.append(templateChild(i));
+  }
+};
 
 const play = () => {
   renderInit();
@@ -47,8 +70,8 @@ const isInResult = (number) => {
 };
 
 const singLoto = (number) => {
-  const path = `../assets/audio/raoloto${number}.webm`;
-  singLotoElement.setAttribute("src", path);
+  const singLotoElement = document.getElementById(`loto-${number}`);
+  singLotoElement.setAttribute("class", "block");
   singLotoElement.load();
   singLotoElement.play();
 };

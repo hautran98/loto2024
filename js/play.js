@@ -5,17 +5,12 @@
 // key(): Passed a number to retrieve the key of a localStorage
 const key = "result";
 class Save {
-  constructor(result) {
-    if (!localStorage.getItem(key)) {
-      this.result = result;
-      this.setItem(key, result);
-    }
-  }
+  constructor(result) {}
   setItem(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   }
   getItem(key) {
-    return localStorage.getItem(key);
+    return JSON.parse(localStorage.getItem(key));
   }
   removeItem(key) {
     localStorage.removeItem(key);
@@ -25,21 +20,52 @@ class Save {
   }
 }
 
-const save = new Save([]);
+const save = new Save();
 
-// const resultContainer = document.getElementById("result");
-// const renderInit = () => {
-// }
+const resultContainer = document.getElementById("result");
+const singLotoElement = document.getElementById("loto-mp3");
+const renderInit = () => {};
+
 const play = () => {
-  //   renderInit();
+  renderInit();
   console.log("play");
 };
 
-// play();
+play();
 
 const getNumber = () => {
   return Math.round(Math.random() * 90);
 };
+const result = save.getItem(key);
+const getResult = () => {
+  return save.getItem(key);
+};
+
+const isInResult = (number) => {
+  const result = getResult();
+  return result.includes(number);
+};
+
+const singLoto = (number) => {
+  const path = `/assets/audio/raoloto${number}.webm`;
+  singLotoElement.setAttribute("src", path);
+  singLotoElement.load();
+  singLotoElement.play();
+};
+
 const random = () => {
-  let number = getNumber();
+  const kq = getResult();
+  if (!kq) {
+    save.setItem(key, []);
+  }
+  let number;
+  do {
+    number = getNumber();
+  } while (isInResult(number));
+  singLoto(number);
+  save.setItem(key, getResult().concat(number));
+};
+
+const reset = () => {
+  save.setItem(key, []);
 };

@@ -43,10 +43,28 @@ const templateChild = (number) => {
   audio.appendChild(source);
   return audio;
 };
+
+const displayNumber = (number, time) => {
+  setTimeout(() => {
+    const divEle = document.createElement("div");
+    const divChildEle = document.createElement("div");
+    divEle.setAttribute("class", "col");
+    divChildEle.setAttribute(
+      "class",
+      "p-1 border rounded-1 bg-danger text-light"
+    );
+    divChildEle.textContent = number;
+    divEle.append(divChildEle);
+    resultContainer.append(divEle);
+  }, time * 1000);
+};
 const renderInit = () => {
   for (let i = 1; i <= 90; i++) {
     songElement.append(templateChild(i));
   }
+  save.getItem(key).forEach((element) => {
+    displayNumber(element);
+  });
 };
 
 const play = () => {
@@ -69,11 +87,23 @@ const isInResult = (number) => {
   return result.includes(number);
 };
 
+{
+  /* <div class="col">
+<div class="p-1 border rounded-1">Row column</div>
+</div> */
+}
+
 const singLoto = (number) => {
+  for (let i = 1; i <= 90; i++) {
+    const song = document.getElementById(`loto-${i}`);
+    song.setAttribute("class", "d-none");
+    song.pause();
+  }
   const singLotoElement = document.getElementById(`loto-${number}`);
   singLotoElement.setAttribute("class", "block");
   singLotoElement.load();
   singLotoElement.play();
+  displayNumber(number, Math.round(singLotoElement.getAttribute("duration")));
 };
 
 const random = () => {

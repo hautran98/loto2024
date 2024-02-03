@@ -47,7 +47,7 @@ const isInResult = (number) => {
 };
 
 const singLoto = (number) => {
-  const path = `/assets/audio/raoloto${number}.webm`;
+  const path = `../assets/audio/raoloto${number}.webm`;
   singLotoElement.setAttribute("src", path);
   singLotoElement.load();
   singLotoElement.play();
